@@ -1,0 +1,17 @@
+Requisitos para executar a aplicação:
+
+    - PHP 7.2.*
+    - composer 2.*
+    - git 2.*
+    - Banco de dados (MySql, PostgreSQL, MariaDB)
+
+Aplicação:
+    - Api para cadastro de pessoas.
+
+Teste:
+
+    - Ser capaz de fazer a aplicação funcionar.
+    - Validar o CEP enviado na requisição de cadastro e update(CEP precisa ser válido e constar na base de dados do ViaCEP: https://viacep.com.br).
+    - Validar o CPF enviado na requisição de cadastro e update.
+    - Disponibilizar os serviços de "show", "delete", "update", baseado nos serviços existentes, "store" e "find" no controller "PessoaController".
+
