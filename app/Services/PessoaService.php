@@ -40,7 +40,6 @@ class PessoaService implements PessoaServiceInterface
      */
     public function create(array $data): ?Model
     {
-        $var = 10 / 0; //Aqui
         return $this->pessoaRepo->create($data);
     }
 
