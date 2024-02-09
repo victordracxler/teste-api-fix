@@ -74,8 +74,8 @@ class PessoaController extends Controller
         if (!$pessoa) {
             return response()->json(['message' => "Pessoa não encontrada"], Response::HTTP_NOT_FOUND);
         }
-        $pessoa->update($request->all());
-        return response()->json($pessoa, Response::HTTP_OK);
+        $pessoaUpdate = $this->pessoaService->update($request->all(), $id);
+        return response()->json($pessoaUpdate, Response::HTTP_OK);
     }
 
     /**
