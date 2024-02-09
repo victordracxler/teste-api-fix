@@ -29,6 +29,8 @@ class PessoaController extends Controller
     public function index()
     {
         //
+        // return $this->pessoaService->pessoaList();
+        // return response()->json('oi');
     }
 
     /**
