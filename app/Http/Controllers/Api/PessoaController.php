@@ -28,9 +28,11 @@ class PessoaController extends Controller
      */
     public function index()
     {
-        //
-        // return $this->pessoaService->pessoaList();
-        // return response()->json('oi');
+        $pessoas = $this->pessoaService->all();
+        if ($pessoas) {
+            return response()->json($pessoas, Response::HTTP_OK);
+        }
+        return response()->json($pessoas, Response::HTTP_BAD_REQUEST);
     }
 
     /**
