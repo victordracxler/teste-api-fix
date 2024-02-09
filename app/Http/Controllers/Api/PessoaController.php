@@ -70,7 +70,12 @@ class PessoaController extends Controller
      */
     public function update(PessoaUpdateRequest $request, $id)
     {
-        //
+        $pessoa = $this->pessoaService->find($id);
+        if (!$pessoa) {
+            return response()->json(['message' => "Pessoa não encontrada"], Response::HTTP_NOT_FOUND);
+        }
+        $pessoa->update($request->all());
+        return response()->json($pessoa, Response::HTTP_OK);
     }
 
     /**
