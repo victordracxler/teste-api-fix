@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PessoaStoreRequest;
 use App\Http\Requests\PessoaUpdateRequest;
+use App\Services\CepService;
 use App\Services\PessoaServiceInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,10 +16,12 @@ class PessoaController extends Controller
      * @var PessoaServiceInterface
      */
     private $pessoaService;
+    private $cepService;
 
-    public function __construct(PessoaServiceInterface $pessoaService)
+    public function __construct(PessoaServiceInterface $pessoaService, CepService $cepService)
     {
         $this->pessoaService = $pessoaService;
+        $this->cepService = $cepService;
     }
 
     /**
@@ -41,6 +44,11 @@ class PessoaController extends Controller
      */
     public function store(PessoaStoreRequest $request)
     {
+        $cepValido = $this->cepService->validaCep($request->input("cep"));
+        if (!$cepValido) {
+            return response()->json(['message' => "CEP inválido"], Response::HTTP_BAD_REQUEST);
+        }
+
         $pessoa = $this->pessoaService->create($request->all());
         if ($pessoa) {
             return response()->json($pessoa, Response::HTTP_OK);
@@ -70,6 +78,11 @@ class PessoaController extends Controller
      */
     public function update(PessoaUpdateRequest $request, $id)
     {
+        $cepValido = $this->cepService->validaCep($request->input("cep"));
+        if (!$cepValido) {
+            return response()->json(['message' => "CEP inválido"], Response::HTTP_BAD_REQUEST);
+        }
+
         $pessoa = $this->pessoaService->find($id);
         if (!$pessoa) {
             return response()->json(['message' => "Pessoa não encontrada"], Response::HTTP_NOT_FOUND);
