@@ -74,8 +74,12 @@ class PessoaController extends Controller
         if (!$pessoa) {
             return response()->json(['message' => "Pessoa não encontrada"], Response::HTTP_NOT_FOUND);
         }
+
         $pessoaUpdate = $this->pessoaService->update($request->all(), $id);
-        return response()->json($pessoaUpdate, Response::HTTP_OK);
+        if ($pessoaUpdate) {
+            return response()->json($pessoaUpdate, Response::HTTP_OK);
+        }
+        return response()->json($pessoaUpdate, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -86,6 +90,17 @@ class PessoaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pessoa = $this->pessoaService->find($id);
+        if (!$pessoa) {
+            return response()->json(['message' => "Pessoa não encontrada"], Response::HTTP_NOT_FOUND);
+        }
+
+        $pessoaDelete = $this->pessoaService->delete($id);
+
+        if ($pessoaDelete) {
+            return response()->json(['message' => "Pessoa excluída com sucesso!"], Response::HTTP_OK);
+        }
+        return response()->json($pessoaDelete, Response::HTTP_BAD_REQUEST);
+
     }
 }
