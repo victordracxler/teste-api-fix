@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PessoaStoreRequest;
 use App\Http\Requests\PessoaUpdateRequest;
 use App\Services\CepService;
+use App\Services\CpfService;
 use App\Services\PessoaServiceInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +18,16 @@ class PessoaController extends Controller
      */
     private $pessoaService;
     private $cepService;
+    private $cpfService;
 
-    public function __construct(PessoaServiceInterface $pessoaService, CepService $cepService)
-    {
+    public function __construct(
+        PessoaServiceInterface $pessoaService,
+        CepService $cepService,
+        CpfService $cpfService
+    ) {
         $this->pessoaService = $pessoaService;
         $this->cepService = $cepService;
+        $this->cpfService = $cpfService;
     }
 
     /**
@@ -47,6 +53,11 @@ class PessoaController extends Controller
         $cepValido = $this->cepService->validaCep($request->input("cep"));
         if (!$cepValido) {
             return response()->json(['message' => "CEP inválido"], Response::HTTP_BAD_REQUEST);
+        }
+
+        $cpfValido = $this->cpfService->validaCpf($request->input("cpf"));
+        if (!$cpfValido) {
+            return response()->json(['message' => "CPF inválido"], Response::HTTP_BAD_REQUEST);
         }
 
         $pessoa = $this->pessoaService->create($request->all());
@@ -81,6 +92,10 @@ class PessoaController extends Controller
         $cepValido = $this->cepService->validaCep($request->input("cep"));
         if (!$cepValido) {
             return response()->json(['message' => "CEP inválido"], Response::HTTP_BAD_REQUEST);
+        }
+        $cpfValido = $this->cpfService->validaCpf($request->input("cpf"));
+        if (!$cpfValido) {
+            return response()->json(['message' => "CPF inválido"], Response::HTTP_BAD_REQUEST);
         }
 
         $pessoa = $this->pessoaService->find($id);
